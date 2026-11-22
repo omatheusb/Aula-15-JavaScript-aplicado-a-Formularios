@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercício 3 - Formulário de pedido</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-body-tertiary">
+<div class="container py-5" style="max-width: 640px;">
+  <a href="index.html" class="btn btn-sm btn-outline-secondary mb-3">&larr; Voltar</a>
+  <div class="card shadow-sm">
+    <div class="card-body p-4">
+      <h1 class="h4 mb-1">Exercício 3 - Formulário de pedido</h1>
+      <p class="text-muted small mb-4">O total é recalculado sempre que o produto ou a quantidade mudam.</p>
+      <form id="form">
+        <div class="mb-3">
+          <label for="produto" class="form-label">Produto</label>
+          <select id="produto" class="form-select">
+            <option value="0">Selecione...</option>
+            <option value="25.90">Camiseta - R$ 25,90</option>
+            <option value="89.90">Calça - R$ 89,90</option>
+            <option value="149.90">Tênis - R$ 149,90</option>
+            <option value="39.90">Boné - R$ 39,90</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="quantidade" class="form-label">Quantidade</label>
+          <input type="number" id="quantidade" class="form-control" value="1" min="1">
+        </div>
+        <p class="fs-5">Total: <strong id="total">R$ 0,00</strong></p>
+        <button type="submit" class="btn btn-primary">Finalizar pedido</button>
+      </form>
+      <div id="resultado" class="mt-3"></div>
+    </div>
+  </div>
+</div>
+<script>
+const produto = document.getElementById("produto");
+const quantidade = document.getElementById("quantidade");
+const total = document.getElementById("total");
+
+function calcularTotal() {
+  const preco = parseFloat(produto.value);
+  const qtd = parseInt(quantidade.value) || 0;
+  const valor = preco * qtd;
+  // toLocaleString formata no padrão brasileiro (R$ 1.234,56)
+  total.textContent = valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  return valor;
+}
+
+produto.addEventListener("change", calcularTotal);
+quantidade.addEventListener("input", calcularTotal);
+
+document.getElementById("form").addEventListener("submit", function (e) {
+  e.preventDefault();
+  if (produto.value === "0") {
+    alert("Selecione um produto.");
+    return;
+  }
+  document.getElementById("resultado").innerHTML =
+    '<div class="alert alert-success">Pedido finalizado! Total: ' + total.textContent + '</div>';
+});
+</script>
+</body>
+</html>

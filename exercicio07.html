@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercício 7 - Habilidades em badges</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-body-tertiary">
+<div class="container py-5" style="max-width: 640px;">
+  <a href="index.html" class="btn btn-sm btn-outline-secondary mb-3">&larr; Voltar</a>
+  <div class="card shadow-sm">
+    <div class="card-body p-4">
+      <h1 class="h4 mb-1">Exercício 7 - Habilidades em badges</h1>
+      <p class="text-muted small mb-4">Adiciona habilidades ao clicar no botão ou apertar Enter. Cada badge pode ser removido.</p>
+      <form id="form">
+        <label for="habilidade" class="form-label">Habilidade</label>
+        <div class="input-group">
+          <input type="text" id="habilidade" class="form-control" placeholder="Ex: JavaScript">
+          <button type="button" id="btnAdicionar" class="btn btn-outline-primary">Adicionar</button>
+        </div>
+        <div id="lista" class="d-flex flex-wrap gap-2 mt-3"></div>
+        <button type="submit" class="btn btn-primary mt-3">Salvar</button>
+      </form>
+      <div id="resultado" class="mt-3"></div>
+    </div>
+  </div>
+</div>
+<script>
+const habilidade = document.getElementById("habilidade");
+const lista = document.getElementById("lista");
+const habilidades = []; // guarda as habilidades adicionadas
+
+function adicionar() {
+  const texto = habilidade.value.trim();
+  if (texto === "" || habilidades.includes(texto)) return; // ignora vazio ou repetido
+
+  habilidades.push(texto);
+
+  // Cria o badge
+  const badge = document.createElement("span");
+  badge.className = "badge text-bg-primary d-flex align-items-center gap-2 p-2";
+  badge.textContent = texto;
+
+  // Botão de remover dentro do badge
+  const fechar = document.createElement("button");
+  fechar.type = "button";
+  fechar.className = "btn-close btn-close-white";
+  fechar.style.fontSize = "0.6rem";
+  fechar.addEventListener("click", function () {
+    habilidades.splice(habilidades.indexOf(texto), 1);
+    badge.remove();
+  });
+
+  badge.appendChild(fechar);
+  lista.appendChild(badge);
+  habilidade.value = "";
+  habilidade.focus();
+}
+
+document.getElementById("btnAdicionar").addEventListener("click", adicionar);
+
+// Enter adiciona a habilidade em vez de enviar o formulário
+habilidade.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    adicionar();
+  }
+});
+
+document.getElementById("form").addEventListener("submit", function (e) {
+  e.preventDefault();
+  document.getElementById("resultado").innerHTML =
+    '<div class="alert alert-success">Habilidades: ' +
+    (habilidades.length ? habilidades.join(", ") : "nenhuma") + '</div>';
+});
+</script>
+</body>
+</html>

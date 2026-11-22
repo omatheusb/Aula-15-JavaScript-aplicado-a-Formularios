@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exercício 1 - Contador de caracteres</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-body-tertiary">
+<div class="container py-5" style="max-width: 640px;">
+  <a href="index.html" class="btn btn-sm btn-outline-secondary mb-3">&larr; Voltar</a>
+  <div class="card shadow-sm">
+    <div class="card-body p-4">
+      <h1 class="h4 mb-1">Exercício 1 - Contador de caracteres</h1>
+      <p class="text-muted small mb-4">Textarea com limite de 140 caracteres. Ao chegar em zero, o campo é bloqueado.</p>
+      <form id="form">
+        <label for="mensagem" class="form-label">Mensagem</label>
+        <textarea id="mensagem" class="form-control" rows="4" maxlength="140"></textarea>
+        <div class="d-flex justify-content-between mt-2">
+          <small id="aviso" class="text-danger d-none">Limite atingido!</small>
+          <small class="ms-auto">Restam <strong id="contador">140</strong> caracteres</small>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Enviar</button>
+      </form>
+      <div id="resultado" class="mt-3"></div>
+    </div>
+  </div>
+</div>
+<script>
+const LIMITE = 140;
+const mensagem = document.getElementById("mensagem");
+const contador = document.getElementById("contador");
+const aviso = document.getElementById("aviso");
+
+// Evento "input": dispara a cada caractere digitado ou apagado
+mensagem.addEventListener("input", function () {
+  const restantes = LIMITE - mensagem.value.length;
+  contador.textContent = restantes;
+
+  if (restantes <= 0) {
+    mensagem.disabled = true;           // bloqueia o campo
+    aviso.classList.remove("d-none");
+    contador.classList.add("text-danger");
+  }
+});
+
+document.getElementById("form").addEventListener("submit", function (e) {
+  e.preventDefault(); // impede o recarregamento da página
+  document.getElementById("resultado").innerHTML =
+    '<div class="alert alert-success">Mensagem enviada: ' + mensagem.value + '</div>';
+});
+</script>
+</body>
+</html>
